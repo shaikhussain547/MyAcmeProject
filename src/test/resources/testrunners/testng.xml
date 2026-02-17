@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="AcmeSuite">
+
+  <listeners>
+  	<listener class-name="qa.acme.listeners.AnnotationTransformer"/>
+  	<listener class-name="qa.acme.listeners.ExtentReportListener" />
+  </listeners>
+  
+  <test thread-count="5" name="AcmeTest">
+    <classes>
+      <class name="qa.acme.tests.LoginPageTest"/>
+    </classes>
+  </test> <!-- AcmeTest -->
+</suite> <!-- AcmeSuite -->
