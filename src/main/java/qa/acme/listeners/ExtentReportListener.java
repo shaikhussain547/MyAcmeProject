@@ -1,5 +1,6 @@
 package qa.acme.listeners;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -8,6 +9,9 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.io.FileHandler;
 import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
@@ -17,14 +21,16 @@ import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.MediaEntityBuilder;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 
+import qa.acme.constants.AppConstants;
 import qa.acme.factory.DriverFactory;
 
 
 public class ExtentReportListener implements ITestListener {
 	
 	
-	private static final String timeStamp = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss").format(new Date());
-	private static final String OUTPUT_FOLDER = "./TestReports/Latest/"+timeStamp+"/";
+//	private static final String timeStamp = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss").format(new Date());
+//	private static final String OUTPUT_FOLDER = "./TestReports/Latest/"+timeStamp+"/";
+	private static final String OUTPUT_FOLDER = AppConstants.OUTPUT_FOLDER;
 	private static final String FILE_NAME = "TestExecutionReport.html";
 
 	private static ExtentReports extent = init();
@@ -104,7 +110,8 @@ public class ExtentReportListener implements ITestListener {
 //		System.out.println((result.getMethod().getMethodName() + " failed!"));
 		String methodName = result.getMethod().getMethodName();
 		test.get().fail("Test failed");
-		test.get().fail(result.getThrowable(), MediaEntityBuilder.createScreenCaptureFromPath(DriverFactory.getScreenshot(methodName), methodName).build());
+//		test.get().fail(result.getThrowable(), MediaEntityBuilder.createScreenCaptureFromPath(DriverFactory.getScreenshot(methodName), methodName).build());
+		test.get().fail(result.getThrowable(), MediaEntityBuilder.createScreenCaptureFromPath(DriverFactory.getScreenshotNew(methodName), methodName).build());
 		test.get().getModel().setEndTime(getTime(result.getEndMillis()));
 	}
 
@@ -127,5 +134,6 @@ public class ExtentReportListener implements ITestListener {
 		calendar.setTimeInMillis(millis);
 		return calendar.getTime();
 	}
+	
 
 }

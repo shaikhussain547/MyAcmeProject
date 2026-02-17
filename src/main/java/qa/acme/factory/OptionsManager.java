@@ -30,6 +30,8 @@ public class OptionsManager {
 			co.addArguments("--incognito");
 		}
 		
+		co.addArguments("--window-size=1920,1080"); 
+		
 		return co;
 	}
 	

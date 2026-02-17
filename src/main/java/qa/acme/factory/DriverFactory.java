@@ -4,8 +4,12 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Properties;
 
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
@@ -66,6 +70,7 @@ public class DriverFactory {
 		
 		getDriver().manage().deleteAllCookies();
 		getDriver().manage().window().maximize();
+		getDriver().manage().window().setSize(new Dimension(1920,1080));
 //		getDriver().get(prop.getProperty("url"));// loginPage
 
 		return getDriver();
@@ -111,6 +116,35 @@ public class DriverFactory {
 		
 		File srcFile = ((TakesScreenshot) getDriver()).getScreenshotAs(OutputType.FILE);//temp location
 		String path = System.getProperty("user.dir")+"/screenshots/"+methodName+"_"+System.currentTimeMillis()+".png";
+		System.out.println("Path : "+path);
+		File destination = new File(path);
+		
+		try {
+			FileHandler.copy(srcFile, destination);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return path;
+	}
+	
+	public static String getScreenshotNew(String methodName) {
+	
+		Path folderPath = Paths.get(AppConstants.OUTPUT_FOLDER+"/Screenshots/");
+		// if directory exists?
+		if (!Files.exists(folderPath)) {
+			try {
+				Files.createDirectories(folderPath);
+			} catch (IOException e) {
+				// fail to create directory
+				e.printStackTrace();
+			}
+		}
+		System.out.println(folderPath);
+		File srcFile = ((TakesScreenshot) getDriver()).getScreenshotAs(OutputType.FILE);//temp location
+//		String path = System.getProperty("user.dir")+"/screenshots/"+methodName+"_"+System.currentTimeMillis()+".png";
+		String path = System.getProperty("user.dir")+folderPath+"/"+methodName+"_"+System.currentTimeMillis()+".png";
+		System.out.println("Path : "+path);
 		File destination = new File(path);
 		
 		try {
