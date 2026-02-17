@@ -5,9 +5,11 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
+import com.aventstack.extentreports.Status;
 
 import io.qameta.allure.Step;
 import qa.acme.constants.AppConstants;
+import qa.acme.listeners.ExtentReportListener;
 import qa.acme.utils.ElementUtil;
 
 public class LoginPage{
@@ -32,41 +34,42 @@ public class LoginPage{
 	}
 
 	// page actions/methods:
-	@Step("getting login page title")
+//	@Step("getting login page title")
 	public String getLoginPageTitle() {
 		String title = eleUtil.waitForTitleIs(AppConstants.LOGIN_PAGE_TITLE, AppConstants.SHORT_DEFAUTT_WAIT);
 		System.out.println("login page title:" + title);
+		ExtentReportListener.test.get().log(Status.INFO, "Login page title is : "+title);
 		return title;
 	}
 
-	@Step("getting login page url")
+//	@Step("getting login page url")
 	public String getLoginPageURL() {
 		String url = eleUtil.waitForURLContains(AppConstants.LOGIN_PAGE_FRACTION_URL, AppConstants.SHORT_DEFAUTT_WAIT);
 		System.out.println("login page url:" + url);
 		return url;
 	}
 
-	@Step("checking forgot pwd link exist")
+//	@Step("checking forgot pwd link exist")
 	public boolean isForgotPwdLinkExist() {
 		return eleUtil.waitForElementVisible(forgotPwdLink, AppConstants.SHORT_DEFAUTT_WAIT).isDisplayed();
 	}
 
-	@Step("checking logo exist")
+//	@Step("checking logo exist")
 	public boolean isLogoExist() {
 		return eleUtil.waitForElementVisible(loginHeader, AppConstants.SHORT_DEFAUTT_WAIT).isDisplayed();
 		
 	}
-/*
-	@Step("username is : {0} and password {1} ")
-	public AccountsPage doLogin(String username, String pwd) {
+
+//	@Step("username is : {0} and password {1} ")
+	public DashboardPage doLogin(String username, String pwd) {
 		System.out.println("creds are: " + username + " : " + pwd);
-		eleUtil.waitForVisibilityOfElement(userName, AppConstants.MEDIUM_DEFAUTT_WAIT).sendKeys(username);
+		eleUtil.waitForElementVisible(userName, AppConstants.MEDIUM_DEFAUTT_WAIT).sendKeys(username);
 		eleUtil.doSendKeys(password, pwd);
 		eleUtil.doClick(loginBtn);
-		
-		return new AccountsPage(driver);
+		return new DashboardPage(driver);
 	}
 	
+/*	
 	@Step("navigating to register page")
 	public RegisterPage navigateToRegisterPage() {
 		eleUtil.waitForElementVisible(registerLink, AppConstants.MEDIUM_DEFAUTT_WAIT).click();
